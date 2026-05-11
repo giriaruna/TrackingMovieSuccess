@@ -18,43 +18,69 @@ st.markdown(
         background-attachment: fixed;
     }
     
-    /* Main Content Container: High-contrast white for maximum readability */
+    /* Main Content Container: High-contrast white for readability */
     .main .block-container {
-        background-color: rgba(255, 255, 255, 0.98);
+        background-color: rgba(255, 255, 255, 0.98) !important;
         padding: 60px;
-        border-radius: 5px;
+        border-radius: 10px;
         margin-top: 20px;
-        color: #000000;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        color: #000000 !important;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
 
-    /* Sidebar Styling */
-    [data-testid="stSidebar"] {
-        background-color: rgba(248, 249, 251, 0.95);
-        border-right: 1px solid #EEEEEE;
+    /* FORCE ALL TEXT IN MAIN CONTAINER TO BLACK */
+    .main .block-container h1, 
+    .main .block-container h2, 
+    .main .block-container h3, 
+    .main .block-container h4, 
+    .main .block-container p, 
+    .main .block-container li, 
+    .main .block-container span, 
+    .main .block-container label,
+    .main .block-container div {
+        color: #000000 !important;
     }
 
-    /* Typography: Georgia for Headers as requested */
+    /* Professional Typography */
     h1, h2, h3, h4 {
-        color: #111111 !important;
-        font-family: 'Georgia', serif;
-        border-bottom: 1px solid #E0E0E0;
+        font-family: 'Georgia', serif !important;
+        border-bottom: 1px solid #DDDDDD;
         padding-bottom: 12px;
         margin-bottom: 20px;
     }
+
+    /* FIXING TABS VISIBILITY */
+    /* This ensures tab names are bold, black, and clear regardless of theme */
+    .stTabs [data-baseweb="tab-list"] button [data-testid="stWidgetLabel"] p {
+        color: #000000 !important;
+        font-size: 1.2rem !important;
+        font-weight: 700 !important;
+    }
     
-    p, li, span {
-        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-        line-height: 1.8;
-        font-size: 1.15rem;
-        color: #222222;
+    .stTabs [data-baseweb="tab"] {
+        border-radius: 5px 5px 0 0;
+    }
+
+    /* FIXING SIDEBAR VISIBILITY */
+    [data-testid="stSidebar"] {
+        background-color: rgba(245, 245, 245, 1.0) !important;
+        border-right: 2px solid #E0E0E0;
+    }
+
+    /* Force Sidebar text to be high-contrast black */
+    [data-testid="stSidebar"] h3, 
+    [data-testid="stSidebar"] p, 
+    [data-testid="stSidebar"] li,
+    [data-testid="stSidebar"] span {
+        color: #000000 !important;
+        font-weight: 600 !important;
     }
 
     /* Metrics Styling */
     [data-testid="stMetricValue"] {
-        font-size: 2rem !important;
-        font-weight: 700;
-        color: #1A73E8;
+        font-size: 2.2rem !important;
+        font-weight: 800;
+        color: #1A73E8 !important;
     }
     </style>
     """,
@@ -63,7 +89,7 @@ st.markdown(
 
 st.sidebar.image("logo.png", width=140)
 st.sidebar.markdown("### Project Identification")
-st.sidebar.write("**Course:** Data Bootcamp")
+st.sidebar.write("**Course:** Data Bootcamp Final")
 st.sidebar.write("**Instructor:** Jacob Frias Koehler")
 st.sidebar.markdown("---")
 st.sidebar.write("**Team Members:**")
@@ -71,7 +97,7 @@ st.sidebar.write("- Aruna Giri")
 st.sidebar.write("- Jane Manalu")
 st.sidebar.write("- KJ Moses")
 st.sidebar.markdown("---")
-st.sidebar.caption("Final Submission Date: May 13, 2026")
+st.sidebar.caption("Submission Date: May 13, 2026")
 
 @st.cache_data 
 def load_and_process_data():
@@ -82,7 +108,7 @@ def load_and_process_data():
     df["release_date"] = pd.to_datetime(df["release_date"], errors="coerce")
     df['engagement_ratio'] = df['trailer_likes'] / df['trailer_views']
     
-    # Unsupervised Learning: K-Means Clustering
+    # Machine Learning: K-Means Clustering
     features = df[['popularity', 'trailer_views']].fillna(0)
     scaler = StandardScaler()
     scaled_features = scaler.fit_transform(features)
@@ -90,7 +116,6 @@ def load_and_process_data():
     kmeans = KMeans(n_clusters=3, random_state=42)
     df['cluster'] = kmeans.fit_predict(scaled_features)
     
-    # Labeling clusters based on distribution characteristics
     def classify_performance(row):
         if row['trailer_views'] > df['trailer_views'].quantile(0.85):
             return "High Engagement Viral"
@@ -107,7 +132,7 @@ with st.spinner("Executing Data Science Pipeline..."):
 
 st.title("Predicting Movie Success: Metadata and Marketing Integration")
 
-tab1, tab2, tab3 = st.tabs(["Introduction and Data", "Exploratory Analysis", "Modeling and Next Steps"])
+tab1, tab2, tab3 = st.tabs(["Project Overview", "Exploratory Analysis", "Modeling and Conclusion"])
 
 with tab1:
     st.header("Introduction to the Problem")
@@ -115,26 +140,23 @@ with tab1:
     The primary research question of this study is: To what extent can YouTube marketing metrics and film metadata 
     be integrated to predict the commercial success of a movie? 
     
-    In the modern film industry, a significant 'Hype Gap' often exists between professional industry rankings 
-    and organic audience sentiment. This project utilizes machine learning to bridge that gap, providing 
-    studios with a predictive framework that prioritizes audience engagement over traditional reach.
+    In the modern film industry, a significant Hype Gap often exists between professional industry rankings 
+    and organic audience sentiment. This project utilizes machine learning to bridge that gap.
     """)
 
     st.header("Data Description")
     st.write("""
     The analysis utilizes a multi-source dataset integrated via API:
-    1. **TMDB (The Movie Database):** Provides metadata including genre, primary popularity scores, and professional ratings.
-    2. **YouTube Data API:** Provides real-time engagement metrics including view counts, like counts, and comment volume.
+    1. **TMDB (The Movie Database):** Metadata including genre, popularity scores, and professional ratings.
+    2. **YouTube Data API:** Real-time engagement metrics including view counts, like counts, and comment volume.
     """)
     
-    st.subheader("High-Level Dataset Overview")
-    st.write("Below is a sample of the processed dataset featuring the top 20 entries.")
+    st.subheader("Processed Dataset Preview")
     st.dataframe(df.head(20))
 
 with tab2:
     st.header("Exploratory Data Analysis")
     
-    # Summary Metrics
     m1, m2, m3 = st.columns(3)
     m1.metric("Average User Rating", f"{round(df['vote_average'].mean(), 1)} / 10")
     m2.metric("Mean Trailer Views", f"{int(df['trailer_views'].mean()):,}")
@@ -144,7 +166,6 @@ with tab2:
     
     with col_a:
         st.subheader("Clustered Performance Analysis")
-        # Scatter plot updated with K-Means Clusters to simplify the "Industry Popularity vs Audience Views" visual
         fig, ax = plt.subplots(figsize=(10, 6))
         sns.scatterplot(data=df, x='popularity', y='trailer_views', hue='performance_segment', 
                         palette='viridis', s=120, alpha=0.8, ax=ax)
@@ -152,11 +173,7 @@ with tab2:
         plt.xlabel("TMDB Popularity Score")
         plt.ylabel("YouTube Trailer Views")
         st.pyplot(fig)
-        st.write("""
-        **Interpretation:** By applying K-Means clustering, we have segmented the scatter plot into three distinct 
-        performance groups. This visualization clearly highlights the 'Industry Backed' movies that fail to 
-        achieve 'Viral' status, proving that industry hype does not always correlate with audience interest.
-        """)
+        st.write("**Analysis:** K-Means clustering highlights the 'Industry Backed' movies that fail to achieve Viral status.")
         
     with col_b:
         st.subheader("Feature Correlation Matrix")
@@ -165,38 +182,28 @@ with tab2:
         sns.heatmap(df[corr_cols].corr(), annot=True, cmap="viridis", ax=ax, fmt=".2f")
         plt.title("Correlation Analysis")
         st.pyplot(fig)
-        st.write("""
-        **Interpretation:** The heatmap quantifies the relationship between marketing reach and quality. 
-        A critical observation is the high correlation (0.90+) between views and likes, which contrasts 
-        with the relatively weak correlation between industry popularity and final user ratings.
-        """)
+        st.write("**Analysis:** High correlation (0.90+) between views and likes suggests strong audience consistency.")
 
 with tab3:
     st.header("Modeling and Interpretation")
     st.write("""
-    The predictive framework utilizes three distinct modeling methodologies:
-    1. **Linear Regression:** Establishes the baseline relationship between industry scores and marketing reach.
-    2. **Random Forest Classification:** Predicts if a film will be a 'Hit' (Rating > 7.0) based on weighted engagement features.
-    3. **K-Means Clustering:** An unsupervised approach to identify natural performance tiers within the market.
-    
-    **Results Summary:** Our models indicate that engagement-driven features (likes-to-view ratios) are 
-    statistically superior predictors of final user satisfaction compared to raw industry popularity scores.
+    1. **Linear Regression:** Establishes trends between marketing reach and audience views.
+    2. **Random Forest Classification:** Predicts 'Hit' status (Rating > 7.0).
+    3. **K-Means Clustering:** Identifies natural performance tiers within the market.
     """)
 
     st.header("Conclusion and Next Steps")
     st.subheader("Summary of Models")
     st.write("""
-    The study concludes that industry popularity is a measure of marketing effort, but YouTube engagement 
-    is a measure of film quality. For a movie to be commercially successful in 2026, predictive models 
-    must prioritize the 'Fan View' (engagement) over the 'Industry View' (reach).
+    Audience engagement metrics (likes-to-view ratios) are statistically superior predictors of final user 
+    satisfaction compared to raw industry popularity scores.
     """)
 
     st.subheader("Next Steps for Further Analysis")
     st.write("""
-    1. **Natural Language Processing (NLP):** Implementing sentiment analysis on YouTube comments to categorize audience reaction as positive, negative, or neutral.
-    2. **Neural Network Architectures:** Developing Deep Learning models to forecast long-term box office revenue in USD based on early engagement decay rates.
-    3. **Hyperparameter Optimization:** Utilizing Grid Search and Cross-Validation to further refine the Random Forest Classifier's predictive accuracy.
-    4. **Financial ROI Integration:** Combining production budget data with engagement metrics to calculate a more accurate predicted Return on Investment.
+    - **NLP Sentiment Analysis:** Analyzing the text of YouTube comments.
+    - **Neural Networks:** Forecasting box office revenue in USD.
+    - **Hyperparameter Optimization:** Refining models via Grid Search.
     """)
 
 st.markdown("---")

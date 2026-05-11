@@ -8,6 +8,7 @@
 **Course:** Data Bootcamp Final  
 **Instructor:** Jacob Frias Koehler  
 **Date:** May 13, 2026  
+**Live Application:** [tracking-movie-success.streamlit.app](https://tracking-movie-success.streamlit.app/)
 
 ---
 
@@ -46,9 +47,7 @@ Provided real-time audience engagement metrics including:
 
 The primary engineered feature used in this study is the **Engagement Ratio**:
 
-\[
-Engagement\ Ratio = \frac{Trailer\ Likes}{Trailer\ Views}
-\]
+$$Engagement\ Ratio = \frac{Trailer\ Likes}{Trailer\ Views}$$
 
 This metric was designed to measure audience interaction quality rather than raw exposure.
 
@@ -62,16 +61,16 @@ We implemented a multi-model machine learning pipeline to analyze the dataset fr
 
 ## 1. Linear Regression
 
-To identify baseline trends between industry popularity (\(x\)) and audience views (\(y\)), we utilized the linear model:
+To identify baseline trends between industry popularity ($x$) and audience views ($y$), we utilized the linear model:
 
-\[
-y = \beta_0 + \beta_1 x + \epsilon
-\]
+$$
+y=\beta_0+\beta_1x+\epsilon
+$$
 
 Where:
-- \(\beta_0\) = intercept
-- \(\beta_1\) = weight of industry hype on audience reach
-- \(\epsilon\) = random error term
+- $\beta_0$ = intercept
+- $\beta_1$ = weight of industry hype on audience reach
+- $\epsilon$ = random error term
 
 The goal was to evaluate whether professional popularity metrics translate into measurable audience engagement.
 
@@ -83,13 +82,13 @@ A **Random Forest Classifier** was trained to predict a binary **"Hit"** status.
 
 A movie is classified as successful if:
 
-\[
-S =
+$$
+S=
 \begin{cases}
 1 & \text{if Rating > 7.0} \\
 0 & \text{otherwise}
 \end{cases}
-\]
+$$
 
 The classifier leveraged:
 - TMDB popularity
