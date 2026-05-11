@@ -6,8 +6,10 @@ from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
 from data_bootcamp_final_movies_ import fetch_movies, create_movie_dataset
 
+# 1. Page Configuration
 st.set_page_config(page_title="Movie Success Analytics", layout="wide")
 
+# 2. Advanced CSS for High-Contrast Visibility (Dark/Light Mode Compatible)
 st.markdown(
     """
     <style>
@@ -50,7 +52,6 @@ st.markdown(
     }
 
     /* FIXING TABS VISIBILITY */
-    /* This ensures tab names are bold, black, and clear regardless of theme */
     .stTabs [data-baseweb="tab-list"] button [data-testid="stWidgetLabel"] p {
         color: #000000 !important;
         font-size: 1.2rem !important;
@@ -67,7 +68,6 @@ st.markdown(
         border-right: 2px solid #E0E0E0;
     }
 
-    /* Force Sidebar text to be high-contrast black */
     [data-testid="stSidebar"] h3, 
     [data-testid="stSidebar"] p, 
     [data-testid="stSidebar"] li,
@@ -87,6 +87,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+# 3. Sidebar: Team and Course Information
 st.sidebar.image("logo.png", width=140)
 st.sidebar.markdown("### Project Identification")
 st.sidebar.write("**Course:** Data Bootcamp Final")
@@ -99,6 +100,7 @@ st.sidebar.write("- KJ Moses")
 st.sidebar.markdown("---")
 st.sidebar.caption("Submission Date: May 13, 2026")
 
+# --- DATA LOADING AND ADVANCED PROCESSING ---
 @st.cache_data 
 def load_and_process_data():
     raw_movies = fetch_movies(pages=4) 
@@ -130,9 +132,10 @@ def load_and_process_data():
 with st.spinner("Executing Data Science Pipeline..."):
     df = load_and_process_data()
 
+# 4. Main Application Layout
 st.title("Predicting Movie Success: Metadata and Marketing Integration")
 
-tab1, tab2, tab3 = st.tabs(["Project Overview", "Exploratory Analysis", "Modeling and Conclusion"])
+tab1, tab2, tab3 = st.tabs(["Project Overview", "Exploratory Analysis", "Modeling and Future Plans"])
 
 with tab1:
     st.header("Introduction to the Problem")
@@ -192,19 +195,55 @@ with tab3:
     3. **K-Means Clustering:** Identifies natural performance tiers within the market.
     """)
 
-    st.header("Conclusion and Next Steps")
-    st.subheader("Summary of Models")
-    st.write("""
+    st.subheader("Random Forest Model Diagnostics")
+    col_diag1, col_diag2 = st.columns(2)
+    with col_diag1:
+        st.image("feature_importance.png", caption="Feature Importance")
+    with col_diag2:
+        st.image("confusion_matrix.png", caption="Confusion Matrix")
+
+    st.header("Conclusion")
+    st.success("""
     Audience engagement metrics (likes-to-view ratios) are statistically superior predictors of final user 
-    satisfaction compared to raw industry popularity scores.
+    satisfaction compared to raw industry popularity scores. Industry popularity measures marketing effort, 
+    but YouTube engagement measures audience value.
     """)
 
-    st.subheader("Next Steps for Further Analysis")
-    st.write("""
-    - **NLP Sentiment Analysis:** Analyzing the text of YouTube comments.
-    - **Neural Networks:** Forecasting box office revenue in USD.
-    - **Hyperparameter Optimization:** Refining models via Grid Search.
-    """)
+    st.markdown("---")
+    st.header("Future Research and Engineering Plans")
+    
+    plan_col1, plan_col2 = st.columns(2)
+    
+    with plan_col1:
+        st.subheader("Qualitative Sentiment Integration")
+        st.write("""
+        Current models rely on quantitative metrics (counts). Future iterations will implement 
+        Natural Language Processing (NLP) to perform sentiment analysis on YouTube comments. 
+        This will allow the model to distinguish between 'high engagement' driven by excitement 
+        versus engagement driven by negative reception.
+        """)
+        
+        st.subheader("Deep Learning Architectures")
+        st.write("""
+        Transitioning from Random Forest to Recurrent Neural Networks (RNNs) or LSTMs to 
+        analyze the temporal decay of trailer engagement. This would enable the prediction 
+        of long-term box office revenue in USD rather than simple categorical success.
+        """)
+
+    with plan_col2:
+        st.subheader("Financial ROI Modeling")
+        st.write("""
+        Integrating production and marketing budget data to calculate a predicted Return on 
+        Investment (ROI). By mapping engagement ratios to financial spend, we can identify 
+        the exact efficiency of digital marketing campaigns.
+        """)
+        
+        st.subheader("Real-Time Predictive Dashboard")
+        st.write("""
+        Developing an automated pipeline that tracks trailer metrics in real-time from 
+        release to premiere, providing a dynamic 'Success Probability' score that 
+        updates as audience sentiment shifts.
+        """)
 
 st.markdown("---")
 st.caption("Aruna Giri, Jane Manalu, KJ Moses | Data Bootcamp Final Project | 2026")
