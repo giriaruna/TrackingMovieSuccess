@@ -11,7 +11,7 @@ Original file is located at
 In this section, we install the necessary libraries and configure the API environment to fetch high-fidelity data from TMDB and YouTube.
 """
 
-pip install isodate #helps with yt duration
+#pip install isodate 
 
 # Dataset building and EDA libraries
 import requests
